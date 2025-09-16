@@ -1,2 +1,3 @@
 #new script for F25 HW2
-datw <- read.csv("z:/GEOG331_F25/idrexlerbooth/")....
+#pc file path
+datw <- read.csv("Z:\\idrexlerbooth\\data\\noaa_data\\2011124.csv")
