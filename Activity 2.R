@@ -36,11 +36,6 @@ averageTemp
 datW$NAME <- factor(datW$NAME)
 datW$siteN <- as.numeric(datW$NAME)
 
-
-#A NOTE FROM ISABEL -- FOR SOME RESON THIS CODE IS REFUSING TO PRINT, 
-  #ESPECIALLY NOT THE RED LINES. I HAVE ZERO CLUE WHY, SO FROM HERE ON I WILL BE 
-  #USING AN AI GENERATED PIECE OF CODE THAT USES AND DEBUGS WHAT YOU HAVE PROVIDED. 
-  #PLEASE LET ME KNOW IF THIS IS NOT OKAY OR NEEDS TO BE CHANGED.
 datW$siteN <- as.numeric(datW$NAME)
 
 #make a histogram for the first site in our levels
@@ -216,10 +211,82 @@ pnorm(5,
 qnorm(0.95,
       mean(datW$TAVE[datW$siteN == 1],na.rm=TRUE),
       sd(datW$TAVE[datW$siteN == 1],na.rm=TRUE))
-qnorm(1, mean(datW$TAVE[datW$siteN == 1],na.rm=TRUE),
-      sd(datW$TAVE[datW$siteN == 1],na.rm=TRUE))
-1 - pnorm(100, 
+1 - pnorm(18.51026, 
           mean(datW$TAVE[datW$siteN == 1],na.rm=TRUE)+4,
-          
           sd(datW$TAVE[datW$siteN == 1], na.rm=TRUE))
 
+1 - pnorm(qnorm(0.95,
+                mean(datW$TAVE[datW$siteN == 1],na.rm=TRUE),
+                sd(datW$TAVE[datW$siteN == 1],na.rm=TRUE)), 
+          mean(datW$TAVE[datW$siteN == 1],na.rm=TRUE)+4,
+          sd(datW$TAVE[datW$siteN == 1], na.rm=TRUE))
+
+par(mfrow=c(2,2))
+annualPrcp <- aggregate(PRCP~NAME + year, data=datW, FUN=sum, na.rm=TRUE)
+site_meanPrcp <- aggregate(PRCP~NAME + year, data=annualPrcp, FUN=mean, na.rm=TRUE)
+site_meanPrcp
+#name of the site the histogram will be based on
+aberdeen <- levels(factor(annualPrcp$NAME))[1]
+#annual totals
+aberdeen_annual <- subset(annualPrcp, NAME == siteName)
+
+hist(aberdeen_annual$PRCP,
+     freq =FALSE,
+     main=paste("Annual Precipitation -", annualPrcp$NAME[1]),
+     xlab = "Annual Precipitation, mm",
+     ylab = "Relative Frequency",
+     col = "slategrey",
+     border = "white")
+
+#do it again :P
+#name of the site the histogram will be based on
+livermore <- levels(factor(annualPrcp$NAME))
+#annual totals
+livermore_annual <-subset(annualPrcp, (annualPrcp$NAME)[2])
+
+hist(livermore_annual$PRCP,
+     freq =FALSE,
+     main=paste("Annual Precipitation -", annualPrcp$NAME[2]),
+     xlab = "Annual Precipitation, mm",
+     ylab = "Relative Frequency",
+     col = "moccasin",
+     border = "white")
+
+#do it again :P
+#name of the site the histogram will be based on
+mes <- levels(annualPrcp$NAME)[3]
+mes_annual <- subset(annualPrcp, NAME == mes)
+hist(mes_annual$PRCP,
+     freq =FALSE,
+     main=paste("Annual Precipitation -", mes),
+     xlab = "Annual Precipitation, mm",
+     ylab = "Relative Frequency",
+     col = "skyblue1",
+     border = "white")
+
+#do it again :P
+#name of the site the histogram will be based on
+mormon <- levels(annualPrcp$NAME)[4]
+mormon_annual <- subset(annualPrcp, NAME == mormon)
+hist(mormon_annual$PRCP,
+     freq =FALSE,
+     main=paste("Annual Precipitation -", mormon),
+     xlab = "Annual Precipitation, mm",
+     ylab = "Relative Frequency",
+     col = "lightsteelblue1",
+     border = "white")
+
+#do it again :P
+#name of the site the histogram will be based on
+morris <- levels(annualPrcp$NAME)[5]
+morris_annual <- subset(annualPrcp, NAME == morris)
+hist(morris_annual$PRCP,
+     freq =FALSE,
+     main=paste("Annual Precipitation -", morris),
+     xlab = "Annual Precipitation, mm",
+     ylab = "Relative Frequency",
+     col = "royalblue4",
+     border = "white")
+
+
+par(mfrow=c(2,5))
