@@ -32,5 +32,5 @@ datW$doy <- yday(dates)
 datW$hour <- hour(dates) + (minute(dates)/60)
 #calculate decimal day of year
 datW$DD <- datW$doy + (datW$hour/24)
-
+#erm
 
