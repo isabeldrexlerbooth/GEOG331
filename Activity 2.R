@@ -1,4 +1,7 @@
-#new script for F25 HW2
+#Note! Most of the code, especially at the top is simply copied and pasted from the Activity instructions
+  #This means, many of the comments in these sections were likely written by you and appear repetitive
+  #I have decided to keep them in the document, as they still do a good job of explaining what the code is doing
+  #however, if you would like me to delelte them/put them in my own words, please let me know!
 #pc file path
 datW <- read.csv("Z:\\idrexlerbooth\\data\\noaa_data\\2011124.csv")
 str(datW)
@@ -81,6 +84,7 @@ abline(v = mean(datW$TAVE[datW$siteN == 1],na.rm=TRUE) + sd(datW$TAVE[datW$siteN
        lwd = 3)
 
 #Site 2
+#first make the histogram
 hist(x = datW$TAVE[datW$siteN == 2],
      freq=FALSE, 
      main = paste(levels(datW$NAME)[2]),
@@ -88,18 +92,18 @@ hist(x = datW$TAVE[datW$siteN == 2],
      ylab="Relative frequency",
      col="darkmagenta",
      border="white")
-#add mean line with red (tomato3) color
+#add mean line with pink (lightpink1) color
 #and thickness of 3
 abline(v = mean(datW$TAVE[datW$siteN == 2],na.rm=TRUE), 
        col = "lightpink1",
        lwd = 3)
-#add standard deviation line below the mean with red (tomato3) color
+#add standard deviation line below the mean with pink (lightpink1) color
 #and thickness of 3
 abline(v = mean(datW$TAVE[datW$siteN == 2],na.rm=TRUE) - sd(datW$TAVE[datW$siteN == 2],na.rm=TRUE), 
        col = "lightpink1", 
        lty = 3,
        lwd = 3)
-#add standard deviation line above the mean with red (tomato3) color
+#add standard deviation line above the mean with pink (lightpink1) color
 #and thickness of 3
 abline(v = mean(datW$TAVE[datW$siteN == 2],na.rm=TRUE) + sd(datW$TAVE[datW$siteN == 2],na.rm=TRUE), 
        col = "lightpink1", 
@@ -107,6 +111,7 @@ abline(v = mean(datW$TAVE[datW$siteN == 2],na.rm=TRUE) + sd(datW$TAVE[datW$siteN
        lwd = 3)
 
 #Site 3
+#first make the histogram
 hist(x = datW$TAVE[datW$siteN == 3],
      freq=FALSE, 
      main = paste(levels(datW$NAME)[3]),
@@ -114,18 +119,18 @@ hist(x = datW$TAVE[datW$siteN == 3],
      ylab="Relative frequency",
      col="darkolivegreen",
      border="white")
-#add mean line with red (tomato3) color
+#add mean line with green (darkolivegreen1) color
 #and thickness of 3
 abline(v = mean(datW$TAVE[datW$siteN == 3],na.rm=TRUE), 
        col = "darkolivegreen1",
        lwd = 3)
-#add standard deviation line below the mean with red (tomato3) color
+#add standard deviation line below the mean with green (darkolivegreen1) color
 #and thickness of 3
 abline(v = mean(datW$TAVE[datW$siteN == 3],na.rm=TRUE) - sd(datW$TAVE[datW$siteN == 3],na.rm=TRUE), 
        col = "darkolivegreen1", 
        lty = 3,
        lwd = 3)
-#add standard deviation line above the mean with red (tomato3) color
+#add standard deviation line above the mean with green (darkolivegreen1) color
 #and thickness of 3
 abline(v = mean(datW$TAVE[datW$siteN == 3],na.rm=TRUE) + sd(datW$TAVE[datW$siteN == 3],na.rm=TRUE), 
        col = "darkolivegreen1", 
@@ -133,6 +138,7 @@ abline(v = mean(datW$TAVE[datW$siteN == 3],na.rm=TRUE) + sd(datW$TAVE[datW$siteN
        lwd = 3)
        
 #Site 4
+#make the histogram
 hist(x = datW$TAVE[datW$siteN == 4],
      freq=FALSE, 
      main = paste(levels(datW$NAME)[4]),
@@ -140,18 +146,18 @@ hist(x = datW$TAVE[datW$siteN == 4],
      ylab="Relative frequency",
      col="slategray1",
      border="white")
-#add mean line with red (tomato3) color
+#add mean line with blue (navy) color
 #and thickness of 3
 abline(v = mean(datW$TAVE[datW$siteN == 4],na.rm=TRUE), 
        col = "navy",
        lwd = 3)
-#add standard deviation line below the mean with red (tomato3) color
+#add standard deviation line below the mean with blue (navy) color
 #and thickness of 3
 abline(v = mean(datW$TAVE[datW$siteN == 4],na.rm=TRUE) - sd(datW$TAVE[datW$siteN == 4],na.rm=TRUE), 
        col = "navy", 
        lty = 3,
        lwd = 3)
-#add standard deviation line above the mean with red (tomato3) color
+#add standard deviation line above the mean with blue (nacy) color
 #and thickness of 3
 abline(v = mean(datW$TAVE[datW$siteN == 4],na.rm=TRUE) + sd(datW$TAVE[datW$siteN == 4],na.rm=TRUE), 
        col = "navy", 
@@ -194,6 +200,9 @@ pnorm(0,
       mean(datW$TAVE[datW$siteN == 1],na.rm=TRUE),
       sd(datW$TAVE[datW$siteN == 1],na.rm=TRUE))
 #pnrom with 5 gives me all probability (area of the curve) below 5 
+#these are the examples from the activity, I'm not sure if you want me to keep them as 
+  #they are unnecessary to my assignment submission, however they demonstrate that I have
+  #input your examples to understand how the code works
 pnorm(5,
       mean(datW$TAVE[datW$siteN == 1],na.rm=TRUE),
       sd(datW$TAVE[datW$siteN == 1],na.rm=TRUE))
@@ -208,20 +217,27 @@ pnorm(5,
 1 - pnorm(20,
           mean(datW$TAVE[datW$siteN == 1],na.rm=TRUE),
           sd(datW$TAVE[datW$siteN == 1],na.rm=TRUE))
+
+#for the question asked in the assignment, first we find the temperature we consider to be the maximum threshold
 qnorm(0.95,
       mean(datW$TAVE[datW$siteN == 1],na.rm=TRUE),
       sd(datW$TAVE[datW$siteN == 1],na.rm=TRUE))
+#then with that temperature, we can calculate the percent of the time we expect to exceed that threshold if the average temperature rises by 4 degrees.
 1 - pnorm(18.51026, 
           mean(datW$TAVE[datW$siteN == 1],na.rm=TRUE)+4,
           sd(datW$TAVE[datW$siteN == 1], na.rm=TRUE))
-
+#this prints the same number as above, but it's interesting to see how you can nest 
+  #these functions to still get the same result without having to create an additional temporary variable
 1 - pnorm(qnorm(0.95,
                 mean(datW$TAVE[datW$siteN == 1],na.rm=TRUE),
                 sd(datW$TAVE[datW$siteN == 1],na.rm=TRUE)), 
           mean(datW$TAVE[datW$siteN == 1],na.rm=TRUE)+4,
           sd(datW$TAVE[datW$siteN == 1], na.rm=TRUE))
-
+#making a new 4x4 window
 par(mfrow=c(2,2))
+#Try as hard as we might, we could not figure out how to make a histogram of the precipitation on our own,
+  #So the code in the next two lines was generated with the help of AI and various sites on Google, please let me know if this is an issue
+  #and we can resubmit a revised version.
 annualPrcp <- aggregate(PRCP~NAME + year, data=datW, FUN=sum, na.rm=TRUE)
 site_meanPrcp <- aggregate(PRCP~NAME + year, data=annualPrcp, FUN=mean, na.rm=TRUE)
 site_meanPrcp
@@ -230,6 +246,7 @@ aberdeen <- levels(factor(annualPrcp$NAME))[1]
 #annual totals
 aberdeen_annual <- subset(annualPrcp, NAME == siteName)
 
+#histogram 1 at Aberdeen
 hist(aberdeen_annual$PRCP,
      freq =FALSE,
      main=paste("Annual Precipitation -", annualPrcp$NAME[1]),
@@ -238,12 +255,12 @@ hist(aberdeen_annual$PRCP,
      col = "slategrey",
      border = "white")
 
-#do it again :P
-#name of the site the histogram will be based on
+#We decided to make histograms for four other locations to help us compare climate trends. It also just looks pretty!
+#name of the site the histogram will be based on, i.e. Livermore
 livermore <- levels(factor(annualPrcp$NAME))
 #annual totals
 livermore_annual <-subset(annualPrcp, (annualPrcp$NAME)[2])
-
+#histogram
 hist(livermore_annual$PRCP,
      freq =FALSE,
      main=paste("Annual Precipitation -", annualPrcp$NAME[2]),
@@ -253,7 +270,7 @@ hist(livermore_annual$PRCP,
      border = "white")
 
 #do it again :P
-#name of the site the histogram will be based on
+#name of the site the histogram will be based on, i.e. Mandan Experiment Station
 mes <- levels(annualPrcp$NAME)[3]
 mes_annual <- subset(annualPrcp, NAME == mes)
 hist(mes_annual$PRCP,
@@ -264,8 +281,7 @@ hist(mes_annual$PRCP,
      col = "skyblue1",
      border = "white")
 
-#do it again :P
-#name of the site the histogram will be based on
+#name of the site the histogram will be based on, i.e. Mormon Flats
 mormon <- levels(annualPrcp$NAME)[4]
 mormon_annual <- subset(annualPrcp, NAME == mormon)
 hist(mormon_annual$PRCP,
@@ -276,8 +292,8 @@ hist(mormon_annual$PRCP,
      col = "lightsteelblue1",
      border = "white")
 
-#do it again :P
-#name of the site the histogram will be based on
+#Yay! Last time!
+#name of the site the histogram will be based on, Morrisville
 morris <- levels(annualPrcp$NAME)[5]
 morris_annual <- subset(annualPrcp, NAME == morris)
 hist(morris_annual$PRCP,
@@ -287,6 +303,3 @@ hist(morris_annual$PRCP,
      ylab = "Relative Frequency",
      col = "royalblue4",
      border = "white")
-
-
-par(mfrow=c(2,5))
