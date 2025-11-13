@@ -4,22 +4,37 @@ library(tidyverse)
 
 #READ IN DATA ON PC
 #read in oak sapling growth data
-#datGrowth <- read.delim("Z:\\idrexlerbooth\\data\\project_data\\knb-lter-cdr.703.1\\e321_Oak sapling growth.txt",
-#                      header = TRUE)
+datGrowth <- read.delim("Z:\\idrexlerbooth\\data\\project_data\\e321_Oak sapling growth.txt", header = TRUE)
 #read in carbon and nitrogen percent
-#datPercent <- read.delim("Z:\\idrexlerbooth\\data\\project_data\\knb-lter-cdr.703.1\\e321_Soil Carbon and Nitrogen.txt",
-#                        header = TRUE)
+datPercent <- read.delim("Z:\\idrexlerbooth\\data\\project_data\\e321_Soil Carbon and Nitrogen.txt", header = TRUE)
+#read in land cover
+datCover <- read.delim("Z:\\idrexlerbooth\\data\\project_data\\e321_Species Percent Cover.txt", header = TRUE)
+
 
 #READ IN DATA ON MAC
 #read in oak sapling growth data
-datGrowth <- read.delim("/Volumes/CLASSspace/GEOG331_F25/idrexlerbooth/data/project_data/e321_Oak sapling growth.txt",
-                      header = TRUE)
+#datGrowth <- read.delim("/Volumes/CLASSspace/GEOG331_F25/idrexlerbooth/data/project_data/e321_Oak sapling growth.txt", header = TRUE)
 #read in carbon and nitrogen percent
-datPercent <- read.delim("/Volumes/CLASSspace/GEOG331_F25/idrexlerbooth/data/project_data/e321_Soil Carbon and Nitrogen.txt",
-                         header = TRUE)
+#datPercent <- read.delim("/Volumes/CLASSspace/GEOG331_F25/idrexlerbooth/data/project_data/e321_Soil Carbon and Nitrogen.txt", header = TRUE)
 #read in land cover
-datCover <- read.delim("/Volumes/CLASSspace/GEOG331_F25/idrexlerbooth/data/project_data/e321_Species Percent Cover.txt",
-                         header = TRUE)
+#datCover <- read.delim("/Volumes/CLASSspace/GEOG331_F25/idrexlerbooth/data/project_data/e321_Species Percent Cover.txt", header = TRUE)
+
+#FACTORING THE GRAZED/UNGRAZED WITH INSIDE/OUTSIDE FENCE
+#not doing cover because it's looking useless
+#add a new column with yes/yes, yes/no, no/yes, and no/no to each dataset, then factorize it for that dataset
+#HOW IT'S ORGANIZED ------- fence/grazed
+#first up, oak sapling growth
+datGrowth$crossover <- paste(datGrowth$bison_fence, datGrowth$grazed, sep = "/")
+growthCrossover <- as.factor(datGrowth$crossover)
+
+#make the scatterplot -- NEED TO PUT THIS IN ITS PLACE
+ggplot(datGrowth, aes(diameter, height, color = growthCrossover)) + geom_point() + theme_classic() +
+  labs(x = "Oak Sapling Diameter", y = "Oak Sapling Height", title = "Scatterplot of Oak Sapling Diameter by Height")
+#still need to change key labels!!!
+
+
+
+
 
 #make a boxplot
 datGrowth$bison_fence <- as.factor(datGrowth$bison_fence)
