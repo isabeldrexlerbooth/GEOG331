@@ -51,4 +51,5 @@ mad_dec$ndvi_out <- zonal(ndvi, mad_buf, fun = "mean")
 
 # calculate the difference to see if DEC lands are more productive
 mad_dec$ndvi_dif <- mad_dec$ndvi_in-mad_dec$ndvi_out
+head(mad_dec)
 
