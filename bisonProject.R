@@ -4,20 +4,24 @@ library(tidyverse)
 
 #READ IN DATA ON PC
 #read in oak sapling growth data
-#datGrowth <- read.delim("Z:\\idrexlerbooth\\data\\project_data\\e321_Oak sapling growth.txt", header = TRUE)
+datGrowth <- read.delim("Z:\\idrexlerbooth\\data\\project_data\\e321_Oak sapling growth.txt", header = TRUE)
 #read in carbon and nitrogen percent
-#datPercent <- read.delim("Z:\\idrexlerbooth\\data\\project_data\\e321_Soil Carbon and Nitrogen.txt", header = TRUE)
+datPercent <- read.delim("Z:\\idrexlerbooth\\data\\project_data\\e321_Soil Carbon and Nitrogen.txt", header = TRUE)
 #read in land cover
-#datCover <- read.delim("Z:\\idrexlerbooth\\data\\project_data\\e321_Species Percent Cover.txt", header = TRUE)
+datCover <- read.delim("Z:\\idrexlerbooth\\data\\project_data\\e321_Species Percent Cover.txt", header = TRUE)
+#read in consumption
+datConsumption <- read.delim("Z:\\idrexlerbooth\\data\\project_data\\e321_Consumption.txt", header = TRUE)
+#read in aboveground biomass
+datBiomass <- read.delim("Z:\\idrexlerbooth\\data\\project_data\\e321_Aboveground Biomass.txt", header = TRUE)
 
 
 #READ IN DATA ON MAC
 #read in oak sapling growth data
-datGrowth <- read.delim("/Volumes/CLASSspace/GEOG331_F25/idrexlerbooth/data/project_data/e321_Oak sapling growth.txt", header = TRUE)
+#datGrowth <- read.delim("/Volumes/CLASSspace/GEOG331_F25/idrexlerbooth/data/project_data/e321_Oak sapling growth.txt", header = TRUE)
 #read in carbon and nitrogen percent
-datPercent <- read.delim("/Volumes/CLASSspace/GEOG331_F25/idrexlerbooth/data/project_data/e321_Soil Carbon and Nitrogen.txt", header = TRUE)
+#datPercent <- read.delim("/Volumes/CLASSspace/GEOG331_F25/idrexlerbooth/data/project_data/e321_Soil Carbon and Nitrogen.txt", header = TRUE)
 #read in land cover
-datCover <- read.delim("/Volumes/CLASSspace/GEOG331_F25/idrexlerbooth/data/project_data/e321_Species Percent Cover.txt", header = TRUE)
+#datCover <- read.delim("/Volumes/CLASSspace/GEOG331_F25/idrexlerbooth/data/project_data/e321_Species Percent Cover.txt", header = TRUE)
 
 #FACTORING THE GRAZED/UNGRAZED WITH INSIDE/OUTSIDE FENCE
 #not doing cover because it's looking useless
@@ -36,7 +40,17 @@ ggplot(datGrowth, aes(diameter, height, color = growthCrossover)) + geom_point()
 #still need to change key labels!!!
 
 
+#11/20
+#MAKING A LINE GRAPH TO TRACK GREEN MATTER CONSUMPTION OVER 4 SAMPLING PERIODS (Bar chart bc time is discrete?)
+#factoring time period
+timePer <- as.factor(datConsumption$sample_period)
+#factoring fenced status
+fenceStatus <- as.factor(datConsumption$subplot)
+#factoring species type
+speciesCons <- as.factor(datConsumption$species)
 
+#get mean mass consumed for every species-period-bison combo
+aveMass <- aggregate(mass ~ timePer + fenceStatus + species, data = datConsumption, FUN = mean)
 
 
 #make a boxplot
