@@ -4,24 +4,24 @@ library(tidyverse)
 
 #READ IN DATA ON PC
 #read in oak sapling growth data
-datGrowth <- read.delim("Z:\\idrexlerbooth\\data\\project_data\\e321_Oak sapling growth.txt", header = TRUE)
+#datGrowth <- read.delim("Z:\\idrexlerbooth\\data\\project_data\\e321_Oak sapling growth.txt", header = TRUE)
 #read in carbon and nitrogen percent
-datPercent <- read.delim("Z:\\idrexlerbooth\\data\\project_data\\e321_Soil Carbon and Nitrogen.txt", header = TRUE)
+#datPercent <- read.delim("Z:\\idrexlerbooth\\data\\project_data\\e321_Soil Carbon and Nitrogen.txt", header = TRUE)
 #read in land cover
-datCover <- read.delim("Z:\\idrexlerbooth\\data\\project_data\\e321_Species Percent Cover.txt", header = TRUE)
+#datCover <- read.delim("Z:\\idrexlerbooth\\data\\project_data\\e321_Species Percent Cover.txt", header = TRUE)
 #read in consumption
-datConsumption <- read.delim("Z:\\idrexlerbooth\\data\\project_data\\e321_Consumption.txt", header = TRUE)
+#datConsumption <- read.delim("Z:\\idrexlerbooth\\data\\project_data\\e321_Consumption.txt", header = TRUE)
 #read in aboveground biomass
-datBiomass <- read.delim("Z:\\idrexlerbooth\\data\\project_data\\e321_Aboveground Biomass.txt", header = TRUE)
+#datBiomass <- read.delim("Z:\\idrexlerbooth\\data\\project_data\\e321_Aboveground Biomass.txt", header = TRUE)
 
 
 #READ IN DATA ON MAC
 #read in oak sapling growth data
-#datGrowth <- read.delim("/Volumes/CLASSspace/GEOG331_F25/idrexlerbooth/data/project_data/e321_Oak sapling growth.txt", header = TRUE)
+datGrowth <- read.delim("/Volumes/CLASSspace/GEOG331_F25/idrexlerbooth/data/project_data/e321_Oak sapling growth.txt", header = TRUE)
 #read in carbon and nitrogen percent
-#datPercent <- read.delim("/Volumes/CLASSspace/GEOG331_F25/idrexlerbooth/data/project_data/e321_Soil Carbon and Nitrogen.txt", header = TRUE)
+datPercent <- read.delim("/Volumes/CLASSspace/GEOG331_F25/idrexlerbooth/data/project_data/e321_Soil Carbon and Nitrogen.txt", header = TRUE)
 #read in land cover
-#datCover <- read.delim("/Volumes/CLASSspace/GEOG331_F25/idrexlerbooth/data/project_data/e321_Species Percent Cover.txt", header = TRUE)
+datCover <- read.delim("/Volumes/CLASSspace/GEOG331_F25/idrexlerbooth/data/project_data/e321_Species Percent Cover.txt", header = TRUE)
 
 #FACTORING THE GRAZED/UNGRAZED WITH INSIDE/OUTSIDE FENCE
 #not doing cover because it's looking useless
@@ -33,10 +33,11 @@ growthCrossover <- as.factor(datGrowth$crossover)
 
 #make the scatterplot -- NEED TO PUT THIS IN ITS PLACE
 ggplot(datGrowth, aes(diameter, height, color = growthCrossover)) + geom_point() + theme_classic() +
+  geom_smooth(method = "lm", se = FALSE) +
   labs(x = "Oak Sapling Diameter", y = "Oak Sapling Height", title = "Oak Sapling Diameter and Height") +
   scale_color_manual(labels = c("outside of the bison fence and not grazed", "inside the bison fence and not grazed", "inside the bison fence and grazed") , values = c("olivedrab", "olivedrab3", "orange2")) +
   theme_bw() +
-  guides(color=guide_legend("Location by Bison Fence and Grazing Status")) 
+  guides(color=guide_legend("Location by Bison Fence and Grazing Status"))
 #still need to change key labels!!!
 
 
