@@ -4,20 +4,20 @@ library(tidyverse)
 
 #READ IN DATA ON PC
 #read in oak sapling growth data
-datGrowth <- read.delim("Z:\\idrexlerbooth\\data\\project_data\\e321_Oak sapling growth.txt", header = TRUE)
+#datGrowth <- read.delim("Z:\\idrexlerbooth\\data\\project_data\\e321_Oak sapling growth.txt", header = TRUE)
 #read in carbon and nitrogen percent
-datPercent <- read.delim("Z:\\idrexlerbooth\\data\\project_data\\e321_Soil Carbon and Nitrogen.txt", header = TRUE)
+#datPercent <- read.delim("Z:\\idrexlerbooth\\data\\project_data\\e321_Soil Carbon and Nitrogen.txt", header = TRUE)
 #read in land cover
-datCover <- read.delim("Z:\\idrexlerbooth\\data\\project_data\\e321_Species Percent Cover.txt", header = TRUE)
+#datCover <- read.delim("Z:\\idrexlerbooth\\data\\project_data\\e321_Species Percent Cover.txt", header = TRUE)
 #read in consumption
-datConsumption <- read.delim("Z:\\idrexlerbooth\\data\\project_data\\e321_Consumption.txt", header = TRUE)
+#datConsumption <- read.delim("Z:\\idrexlerbooth\\data\\project_data\\e321_Consumption.txt", header = TRUE)
 #read in aboveground biomass
-datBiomass <- read.delim("Z:\\idrexlerbooth\\data\\project_data\\e321_Aboveground Biomass.txt", header = TRUE)
+#datBiomass <- read.delim("Z:\\idrexlerbooth\\data\\project_data\\e321_Aboveground Biomass.txt", header = TRUE)
 
 
 #READ IN DATA ON MAC
 #read in oak sapling growth data
-#datGrowth <- read.delim("/Volumes/CLASSspace/GEOG331_F25/idrexlerbooth/data/project_data/e321_Oak sapling growth.txt", header = TRUE)
+datGrowth <- read.delim("/Volumes/GEOG331_F25/idrexlerbooth/data/project_data/e321_Oak sapling growth.txt", header = TRUE)
 #read in carbon and nitrogen percent
 #datPercent <- read.delim("/Volumes/CLASSspace/GEOG331_F25/idrexlerbooth/data/project_data/e321_Soil Carbon and Nitrogen.txt", header = TRUE)
 #read in land cover
@@ -67,7 +67,19 @@ coefficient <- regressions %>%
 print(coefficients)
 nn <- regressions$model[[which(regressions$crossover == "no/no")]]
 summary(nn)
+yn <- regressions$model[[which(regressions$crossover == "yes/no")]]
+summary(yn)
+yy <- regressions$model[[which(regressions$crossover == "yes/yes")]]
+summary(yy)
+modelOverall <- lm(height ~ diameter, data = datGrowth)
+summary(modelOverall)
 
+#now for the ANOVAs
+anova_diam <- aov(diameter ~ crossover, data = datGrowth)
+summary(anova_diam)
+
+anova_height <- aov(height ~ crossover, data = datGrowth)
+summary(anova_height)
 
 #11/20
 #MAKING A LINE GRAPH TO TRACK GREEN MATTER CONSUMPTION OVER 4 SAMPLING PERIODS (Bar chart bc time is discrete?)
@@ -111,3 +123,9 @@ ggplot(datPercent, aes(x = bison_fence, y = TC_perC)) + geom_boxplot()
 datPercent$grazed <- as.factor(datPercent$grazed)
 ggplot(datPercent, aes(x = grazed, y = TC_perC)) + geom_boxplot()
 
+
+#This are the two I'm going to want to do
+ggplot(data = datGrowth, aes(x = crossover, y = diameter)) +
+  geom_boxplot()
+ggplot(data = datGrowth, aes(x = crossover, y = height)) +
+  geom_boxplot()
