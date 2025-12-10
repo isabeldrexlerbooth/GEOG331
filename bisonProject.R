@@ -1,5 +1,6 @@
 #Isabel Drexler Booth
 library(tidyverse)
+library(FSA)
 
 
 #READ IN DATA ON PC
@@ -35,24 +36,14 @@ growthCrossover2 <- factor(growthCrossover, ordered = FALSE)
 #make the scatterplot -- NEED TO PUT THIS IN ITS PLACE
 ggplot(datGrowth, aes(diameter, height, color = growthCrossover2)) + geom_point() + theme_classic() +
   geom_smooth(method = "lm", se = FALSE) +
-  labs(x = "Oak Sapling Diameter", y = "Oak Sapling Height", title = "Oak Sapling Diameter and Height") +
-  scale_color_manual(labels = c("outside of the bison fence and not grazed", "inside the bison fence and not grazed", "inside the bison fence and grazed") , values = c("olivedrab", "olivedrab3", "orange2")) +
-  theme_bw() +
-  guides(color=guide_legend("Location by Bison Fence and Grazing Status"))
+  labs(x = "Oak Sapling Diameter", y = "Oak Sapling Height", title = "Comparison of Oak Sapling Diameter and Height") +
+  scale_color_manual(labels = c("excluded and not grazed", "included and not grazed", "included and grazed") , values = c("olivedrab", "olivedrab3", "orange2")) +
+  theme_bw() + theme(legend.position = "bottom") +
+  guides(color=guide_legend("Bison Enclosure and Grazing Status"))
 #still need to change key labels!!!
 
+
 #12/4
-regNN <- lm(height ~ diameter + growthCrossover2, data = datGrowth)
-summary(regNN)
-
-print(is.ordered(growthCrossover2))
-class(growthCrossover)
-datGrowth$YN <- relevel(datGrowth$growthCrossover2, ref = "yes/no")
-regYN 
-
-regYY
-
-
 #lets try this again
 regressions <- datGrowth %>%
   group_by(crossover) %>%
@@ -74,12 +65,41 @@ summary(yy)
 modelOverall <- lm(height ~ diameter, data = datGrowth)
 summary(modelOverall)
 
-#now for the ANOVAs
-anova_diam <- aov(diameter ~ crossover, data = datGrowth)
-summary(anova_diam)
+#shapiro wilk for normaility
+#height is very not normal
+# Perform Shapiro-Wilk test for 'Value' grouped by 'Factor'
+shapiro_results_dplyr <- datGrowth %>%
+  group_by(crossover) %>%
+  summarize(shapiro_test = list(shapiro.test(height)))
+# Extract and print p-values
+shapiro_results_dplyr %>%
+  mutate(p_value = sapply(shapiro_test, function(x) x$p.value)) %>%
+  select(crossover, p_value)
+####so is diameter
+shapiro_results_dplyr <- datGrowth %>%
+  group_by(crossover) %>%
+  summarize(shapiro_test = list(shapiro.test(diameter)))
+# Extract and print p-values
+shapiro_results_dplyr %>%
+  mutate(p_value = sapply(shapiro_test, function(x) x$p.value)) %>%
+  select(crossover, p_value)
 
-anova_height <- aov(height ~ crossover, data = datGrowth)
-summary(anova_height)
+#now for the ANOVAs -- NOPE
+#anova_diam <- aov(diameter ~ crossover, data = datGrowth)
+#summary(anova_diam)
+#anova_height <- aov(height ~ crossover, data = datGrowth)
+#summary(anova_height)
+
+#Using Kruskal Wallis instead
+resultDiam <- kruskal.test(diameter ~ crossover, data = datGrowth)
+print(resultDiam)
+resultHeight <- kruskal.test(height ~ crossover, data = datGrowth)
+print(resultHeight)
+
+#height is significant, so we are performing a post-hoc dunns test
+dunnTest(height ~ crossover,
+         data=datGrowth,
+         method="bonferroni")
 
 #11/20
 #MAKING A LINE GRAPH TO TRACK GREEN MATTER CONSUMPTION OVER 4 SAMPLING PERIODS (Bar chart bc time is discrete?)
@@ -124,8 +144,34 @@ datPercent$grazed <- as.factor(datPercent$grazed)
 ggplot(datPercent, aes(x = grazed, y = TC_perC)) + geom_boxplot()
 
 
-#This are the two I'm going to want to do
+#This are the two I'm going to want to do (BOXPLOTS YAYAYAYAY!!!)
 ggplot(data = datGrowth, aes(x = crossover, y = diameter)) +
   geom_boxplot()
 ggplot(data = datGrowth, aes(x = crossover, y = height)) +
   geom_boxplot()
+#height fancy
+ggplot(datGrowth, aes(x = crossover, y = height, fill = crossover)) + geom_boxplot() +
+  labs(title = "Oak Sapling Height at Plot Enclosure and Grazing Status",
+       x = "Bison Enclosure and Grazing Status",
+       y = "Oak Sapling Height") + 
+  #this notation to label individual boxplots from Stack Overflow (https://stackoverflow.com/questions/67203268/x-axis-labels-ggplot2-in-r)
+  scale_x_discrete(
+    name="Bison Enclosure and Grazing Status",
+    labels=c("no/no" = 'Excluded and not grazed', 'yes/no'= 'Included and not grazed', 'yes/yes' = 'Included and grazed')) +
+  #I didn't like the legend, so google generated answer says that this will get rid of it
+  scale_fill_manual(values = c("no/no" = "olivedrab", "yes/no" = "olivedrab3", "yes/yes" = "orange2")) +
+  guides(fill = "none") +
+  theme_classic()
+#diameter fancy
+ggplot(datGrowth, aes(x = crossover, y = diameter, fill = crossover)) + geom_boxplot() +
+  labs(title = "Oak Sapling Diameter at Plot Enclosure and Grazing Status",
+       x = "Bison Enclosure and Grazing Status",
+       y = "Oak Sapling Diameter") + 
+  #this notation to label individual boxplots from Stack Overflow (https://stackoverflow.com/questions/67203268/x-axis-labels-ggplot2-in-r)
+  scale_x_discrete(
+    name="Bison Enclosure and Grazing Status",
+    labels=c("no/no" = 'Excluded and not grazed', 'yes/no'= 'Included and not grazed', 'yes/yes' = 'Included and grazed')) +
+  #I didn't like the legend, so google generated answer says that this will get rid of it
+  scale_fill_manual(values = c("no/no" = "olivedrab", "yes/no" = "olivedrab3", "yes/yes" = "orange2")) +
+  guides(fill = "none") +
+  theme_classic()
