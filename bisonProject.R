@@ -1,7 +1,7 @@
 #Isabel Drexler Booth
 library(tidyverse)
 library(FSA)
-
+library(nparcomp)
 
 #READ IN DATA ON PC
 #read in oak sapling growth data
@@ -58,12 +58,23 @@ coefficient <- regressions %>%
 print(coefficients)
 nn <- regressions$model[[which(regressions$crossover == "no/no")]]
 summary(nn)
+confint(nn)
 yn <- regressions$model[[which(regressions$crossover == "yes/no")]]
 summary(yn)
+confint(yn)
 yy <- regressions$model[[which(regressions$crossover == "yes/yes")]]
 summary(yy)
+confint(yy)
 modelOverall <- lm(height ~ diameter, data = datGrowth)
 summary(modelOverall)
+
+model1 <- lm(height ~ diameter + crossover, data = datGrowth)
+summary(model1)
+datGrowth$crossover <- relevel(datGrowth$crossover, ref = "yes/yes")
+model1 <- lm(height ~ diameter + crossover, data = datGrowth)
+summary(model1)
+###use forcats for this!!!
+
 
 #shapiro wilk for normaility
 #height is very not normal
@@ -96,7 +107,30 @@ print(resultDiam)
 resultHeight <- kruskal.test(height ~ crossover, data = datGrowth)
 print(resultHeight)
 
-#height is significant, so we are performing a post-hoc dunns test
+#quartiles for table
+#quartDiam <- quantile(datGrowth, probs = c(0.25, 0.50, 0.75))
+#print(quartiles)
+datGrowth %>%
+  group_by(crossover) %>%
+  summarise(
+    n = n(),
+    Q1 = quantile(diameter, 0.25, na.rm = TRUE),
+    Median = quantile(diameter, 0.50, na.rm = TRUE),
+    Q3 = quantile(diameter, 0.75, na.rm = TRUE)
+  )
+datGrowth %>%
+  group_by(crossover) %>%
+  summarise(
+    n = n(),
+    Q1 = quantile(height, 0.25, na.rm = TRUE),
+    Median = quantile(height, 0.50, na.rm = TRUE),
+    Q3 = quantile(height, 0.75, na.rm = TRUE)
+  )
+
+
+
+
+#height is almost not really significant, so we are performing a post-hoc dunns test
 dunnTest(height ~ crossover,
          data=datGrowth,
          method="bonferroni")
